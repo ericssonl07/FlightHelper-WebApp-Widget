@@ -1,0 +1,61 @@
+<!-- Description: this file contains the HTML structure for webapp elements. -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlightHelper</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>FlightHelper</h1>
+        </header>
+        
+        <div id="search-section">
+            <h2>Search for your Flight</h2>
+            <form id="flight-search-form">
+                <label for="departure">Departing from:</label>
+                <input type="text" placeholder="Hong Kong International Airport" id="departure" required>
+                <div id="departure-suggestions" class="suggestions"></div>
+                
+                <label for="arrival">Arriving at:</label>
+                <input type="text" placeholder="Vancouver International Airport" id="arrival" required>
+                <div id="arrival-suggestions" class="suggestions"></div>
+                
+                <button type="submit">Search</button>
+            </form>
+        </div>
+
+        <div id="flight-options" style="display: none; margin-top: 20px;">
+            <h2>Flight Options</h2>
+            <div id="flight-list" class="scrollable-list">
+            </div>
+            <button type="button" id="back-button">Back</button>
+        </div>
+
+        <div id="flight-details" style="display: none;">
+            <h2>FLIGHT DETAILS</h2>
+            <p id="flight-info"></p>
+            <div id="live-tracking">
+                <h3>Live location tracking</h3>
+                <div id="map"></div>
+            </div>
+            <button type="button" id="back-details-button">Back</button>
+            <button type="button" id="refresh-button">Reload</button>
+        </div>
+    </div>
+
+    <script src="airports.js"></script> <!-- Airport data -->
+    <script src="buttons.js"></script> <!-- Button event listeners -->
+    <script src="details.js"></script> <!-- Flight details -->
+    <script src="dummy.js"></script> <!-- Dummy data simulating API calls -->
+    <script src="options.js"></script> <!-- Flight options display -->
+    <script src="search.js"></script> <!-- Flight search functionality -->
+
+</body>
+</html>

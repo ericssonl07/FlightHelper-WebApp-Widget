@@ -1,0 +1,172 @@
+/* Description: this file contains styling for the widget. */
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 600px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+header {
+    text-align: center;
+}
+
+h1 {
+    color: #333;
+}
+
+h2 {
+    color: #555;
+    text-align: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+label {
+    margin: 10px 0 5px;
+}
+
+input {
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 95%;
+}
+
+button {
+    padding: 10px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+#flight-details {
+    margin-top: 20px;
+}
+
+#map {
+    width: 100%;
+    height: 300px;
+    background-color: #e1e1e1;
+    margin-top: 10px;
+    border-radius: 5px;
+}
+
+.suggestions {
+    border: 1px solid #ccc;
+    background: white;
+    max-height: 150px;
+    overflow-y: auto;
+    width: 100%;
+    margin-top: 5px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: none;
+}
+
+.suggestion-item {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.suggestion-item:hover {
+    background-color: #f0f0f0;
+}
+
+.scrollable-list {
+    border: 1px solid #ccc;
+    background: white;
+    max-height: 300px;
+    overflow-y: auto;
+    width: 100%;
+    margin-top: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.flight-option {
+    padding: 10px;
+    margin-bottom: 1px;
+    background-color: #f9f9f9;
+    cursor: pointer;
+}
+
+.flight-option:hover {
+    background-color: #eaeaea;
+}
+
+.flight-option.selected {
+    background-color: #cfd8dc;
+}
+
+#flight-details {
+    margin-top: 20px;
+    display: none;
+}
+
+#flight-info {
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+#flight-list table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#flight-list th, #flight-list td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+#flight-list th {
+    background-color: #f2f2f2;
+    cursor: pointer;
+}
+
+#flight-list tbody tr:hover {
+    background-color: #f9f9f9;
+    cursor: pointer;
+}
+
+@media screen and (max-width: 600px) {
+    #flight-list table, #flight-list th, #flight-list td {
+        width: auto;
+        display: block;
+    }
+}
+
+button {
+    padding: 10px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
