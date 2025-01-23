@@ -14,42 +14,56 @@ function dummyFetchFlights(depIata, arrIata) {
 }
 
 // Modify the form submission handler to use the dummy fetch function
-document.getElementById('flight-search-form').addEventListener('submit', function(event) {
-    event.preventDefault();
+// document.getElementById('flight-search-form').addEventListener('submit', function(event) {
+//     event.preventDefault();
     
-    const departure = document.getElementById('departure').value;
-    const arrival = document.getElementById('arrival').value;
-    const searchSection = document.getElementById('search-section');
-    const flightOptions = document.getElementById('flight-options');
+//     const departure = document.getElementById('departure').value;
+//     const arrival = document.getElementById('arrival').value;
+//     const flightNumber = document.getElementById('flight-number').value;
+//     const searchSection = document.getElementById('search-section');
+//     const flightOptions = document.getElementById('flight-options');
 
-    const departureAirport = getAirport(departure, 'airport');
-    const arrivalAirport = getAirport(arrival, 'airport');
+//     if (flightNumber) {
+//         const filteredFlights = dummyData.data.filter(flight => flight.flight.iata === flightNumber);
+//         if (filteredFlights.length > 0) {
+//             searchSection.style.display = 'none';
+//             flightOptions.style.display = 'block';
+//             currentFlights = filteredFlights;
+//             displayFlightOptions(filteredFlights);
+//         } else {
+//             alert("No flights found for the entered flight number.");
+//         }
+//         return;
+//     }
 
-    if (!departureAirport || !arrivalAirport) {
-        alert("Please select valid departure and arrival airports.");
-        return;
-    }
+//     const departureAirport = getAirport(departure, 'airport');
+//     const arrivalAirport = getAirport(arrival, 'airport');
 
-    const departureIata = departureAirport.iata;
-    const arrivalIata = arrivalAirport.iata;
+//     if (!departureAirport || !arrivalAirport) {
+//         alert("Please select valid departure and arrival airports OR enter a flight number.");
+//         return;
+//     }
 
-    dummyFetchFlights(departureIata, arrivalIata)
-    .then(data => {
-        const flightData = data.data || [];
-        if (flightData.length > 0) {
-            searchSection.style.display = 'none';
-            flightOptions.style.display = 'block';
-            currentFlights = flightData;
-            displayFlightOptions(flightData);
-        } else {
-            alert("No flights found for the selected airports.");
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert("An error occurred while fetching flight data.");
-    });
-});
+//     const departureIata = departureAirport.iata;
+//     const arrivalIata = arrivalAirport.iata;
+
+//     dummyFetchFlights(departureIata, arrivalIata)
+//     .then(data => {
+//         const flightData = data.data || [];
+//         if (flightData.length > 0) {
+//             searchSection.style.display = 'none';
+//             flightOptions.style.display = 'block';
+//             currentFlights = flightData;
+//             displayFlightOptions(flightData);
+//         } else {
+//             alert("No flights between the selected airports.");
+//         }
+//     })
+//     .catch(error => {
+//         console.error('Error:', error);
+//         alert("An error occurred while fetching flight data.");
+//     });
+// });
 
 // Dummy data for testing the application
 // Flights from HKG to YVR on 2023-10-15, 2023-10-16, 2023-10-17.

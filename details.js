@@ -5,8 +5,8 @@ let map;
 let marker;
 let popup;
 
+// Parse Format: YYYY-MM-DDTHH:MM:SSZ
 function parseTime(time) {
-    // Format: YYYY-MM-DDTHH:MM:SSZ
     const year = Number(time.substring(0, 4));
     const month = Number(time.substring(5, 7)) - 1;
     const day = Number(time.substring(8, 10));
@@ -150,29 +150,103 @@ function showFlightDetails(flight) {
 
 // Function to update the live map
 function updateLiveTracking(flight) {
-    const mapDiv = document.getElementById('map');
-    if (flight.live && flight.live.latitude && flight.live.longitude) {
-        if (!map) {
-            map = L.map(mapDiv).setView([flight.live.latitude, flight.live.longitude], 13);
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; OpenStreetMap contributors'
-            }).addTo(map);
-        } else {
-            map.setView([flight.live.latitude, flight.live.longitude], 13);
-        }
+    map.innerHTML = 'Sorry, live data is not available for this flight.';
+    displayMap (
+        [flight.live.longitude, flight.live.latitude],
+        flight.live.direction,
+        flight.live.altitude
+    );
+}
 
-        if (marker) {
-            marker.setLatLng([flight.live.latitude, flight.live.longitude]);
-            if (!marker.popup) {
-                marker.bindPopup(`Flight Location: ${flight.live.latitude}, ${flight.live.longitude}`).openPopup();
-            }
-        } else {
-            marker = L.marker([flight.live.latitude, flight.live.longitude]).addTo(map)
-                .bindPopup(`Flight Location: ${flight.live.latitude}, ${flight.live.longitude}`)
-                .openPopup();
-        }
-    } else {
-        mapDiv.innerHTML = 'Live tracking data not available.';
-        console.warn('Live tracking data not available:', flight.live);
+
+// Code copied from API Documentation
+function displayMap(coordinates, direction, altitude) {
+    maptilersdk.config.apiKey = mapTilerKey;
+
+    if (map) {
+        map.redraw();
+        return;
     }
+
+    map = new maptilersdk.Map({
+        container: 'map',
+        style: maptilersdk.MapStyle.STREETS.DARK,
+        zoom: 6,
+        center: coordinates,
+        maptilerLogo: true,
+        maxPitch: 95,
+        pitch: 45,
+        touchPitch: true,
+        hash: false,
+        projection: 'globe'
+    });
+
+    (async () => {
+        await map.onReadyAsync();
+        const layer3D = new maptiler3d.Layer3D("custom-3D-layer");
+        map.addLayer(layer3D);
+        layer3D.setAmbientLight({intensity: 2});
+        layer3D.addPointLight("point-light", {intensity: 30});
+        const originalPlaneID = "plane";
+        await layer3D.addMeshFromURL (
+            originalPlaneID,
+            "assets/plane_a340.glb",
+            {
+                lngLat: coordinates,
+                heading: direction,
+                scale: 50,
+                altitude: altitude,
+                altitudeReference: maptiler3d.AltitudeReference.MEAN_SEA_LEVEL,
+            }
+        );
+
+        const guiObj = {
+            play: false,
+            trackFlight: true,
+            speed: 0.0005,
+        };
+
+        const gui = new lil.GUI({ width: 200 });
+
+        gui.add( guiObj, 'trackFlight')
+
+        gui.add( guiObj, 'play')
+        .onChange((play) => {
+            if (play) {
+            playAnimation();
+            }
+        });
+
+        gui.add( guiObj, 'speed', 0, 0.001);
+
+        let progress = 0;
+
+        function playAnimation() {
+            progress += guiObj.speed;
+
+            if (progress > 1) {
+                progress = 0;
+            }
+
+            const position = maptilersdk.math.haversineIntermediateWgs84(paris, sydney, progress);
+            if (progress < 0.2) {
+                layer3D.modifyMesh(originalPlaneID, {lngLat: position, altitude: progress*5000000});
+            } else if (progress > 0.8) {
+                layer3D.modifyMesh(originalPlaneID, {lngLat: position, altitude: 1000000 - ((progress - 0.80) * 5000000)});
+            } else {
+                layer3D.modifyMesh(originalPlaneID, {lngLat: position, altitude: 1000000});
+            }
+
+            if (guiObj.trackFlight) {
+                map.flyTo({
+                    center: position,
+                    pitch: 71,
+                });
+            }
+
+            if (guiObj.play) {
+                requestAnimationFrame(playAnimation);
+            }
+        }
+    })();
 }

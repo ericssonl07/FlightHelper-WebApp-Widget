@@ -6,42 +6,70 @@ function getAirport(value, by = 'airport') {
 }
 
 // Event listener for the form submission
-// document.getElementById('flight-search-form').addEventListener('submit', function(event) {
-//     event.preventDefault();
+document.getElementById('flight-search-form').addEventListener('submit', function(event) {
+    event.preventDefault();
     
-//     const departure = document.getElementById('departure').value;
-//     const arrival = document.getElementById('arrival').value;
-//     const searchSection = document.getElementById('search-section');
-//     const flightOptions = document.getElementById('flight-options');
+    const departure = document.getElementById('departure').value;
+    const arrival = document.getElementById('arrival').value;
+    const searchSection = document.getElementById('search-section');
+    const flightOptions = document.getElementById('flight-options');
+    const flightNumber = document.getElementById('flight-number').value;
 
-//     const departureAirport = getAirport(departure, 'airport');
-//     const arrivalAirport = getAirport(arrival, 'airport');
+    const departureAirport = getAirport(departure, 'airport');
+    const arrivalAirport = getAirport(arrival, 'airport');
 
-//     if (!departureAirport || !arrivalAirport) {
-//         alert("Please select valid departure and arrival airports.");
-//         return;
-//     }
+    if (flightNumber) {
+        fetch(`https://api.aviationstack.com/v1/flights?access_key=${aviationStackKey}&flight_iata=${flightNumber}`)
+            .then(response => response.json())
+            .then(data => {
+                const flightData = data.data || [];
+                if (flightData.length > 0) {
+                    searchSection.style.display = 'none';
+                    flightOptions.style.display = 'block';
+                    displayFlightOptions(flightData);
+                } else {
+                    alert("No flights found for the entered flight number.");
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert("An error occurred while fetching flight data.");
+            });
+        return;
+    }
 
-//     const departureIata = departureAirport.iata;
-//     const arrivalIata = arrivalAirport.iata;
+    if (!departureAirport || !arrivalAirport) {
+        alert("Please select valid departure and arrival airports OR enter a valid flight number.");
+        return;
+    }
 
-//     fetch(`https://api.aviationstack.com/v1/flights?access_key=YOUR_API_KEY&dep_iata=${departureIata}&arr_iata=${arrivalIata}`)
-//         .then(response => response.json())
-//         .then(data => {
-//             const flightData = data.data || [];
-//             if (flightData.length > 0) {
-//                 searchSection.style.display = 'none';
-//                 flightOptions.style.display = 'block';
-//                 displayFlightOptions(flightData);
-//             } else {
-//                 alert("No flights found for the selected airports.");
-//             }
-//         })
-//         .catch(error => {
-//             console.error('Error:', error);
-//             alert("An error occurred while fetching flight data.");
-//         });
-// });
+    const departureIata = departureAirport.iata;
+    const arrivalIata = arrivalAirport.iata;
+
+    fetch(`https://api.aviationstack.com/v1/flights?access_key=${aviationStackKey}&dep_iata=${departureIata}&arr_iata=${arrivalIata}`)
+        .then(response => response.json())
+        .then(data => {
+            const flightData = data.data || [];
+            if (flightData.length > 0) {
+                searchSection.style.display = 'none';
+                flightOptions.style.display = 'block';
+                displayFlightOptions(flightData);
+            } else {
+                alert("No flights found for the selected airports.");
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert("An error occurred while fetching flight data.");
+        });
+
+        event.preventDefault();
+    
+        if (!departureAirport || !arrivalAirport) {
+            alert("Please select valid departure and arrival airports OR enter a flight number.");
+            return;
+        }
+});
 
 // Function to calculate Levenshtein distance
 function levenshteinDistance(a, b) {

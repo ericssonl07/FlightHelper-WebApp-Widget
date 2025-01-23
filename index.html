@@ -7,37 +7,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FlightHelper</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://cdn.maptiler.com/maptiler-sdk-js/v3.0.1/maptiler-sdk.umd.min.js"></script>
+    <script src="https://cdn.maptiler.com/maptiler-3d/v2.0.2/maptiler-3d.umd.min.js"></script>
+    <link href="https://cdn.maptiler.com/maptiler-sdk-js/v3.0.1/maptiler-sdk.css" rel="stylesheet" />
+    <style>
+        #map { position: relative; align-self: center; width: 100%; background: #15181c; }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <header>
+    <header>
+        <div id="header-container">
+            <img src="assets/Elytra_JE2_BE2.webp" alt="FlightHelper logo" id="logo">
             <h1>FlightHelper</h1>
-        </header>
-        
+        </div>
+    </header>
+    <div class="container search-page">
         <div id="search-section">
             <h2>Search for your Flight</h2>
             <form id="flight-search-form">
                 <label for="departure">Departing from:</label>
-                <input type="text" placeholder="Hong Kong International Airport" id="departure" required>
+                <input type="text" placeholder="Hong Kong International Airport" id="departure" autocomplete="off">
                 <div id="departure-suggestions" class="suggestions"></div>
                 
                 <label for="arrival">Arriving at:</label>
-                <input type="text" placeholder="Vancouver International Airport" id="arrival" required>
+                <input type="text" placeholder="Vancouver International Airport" id="arrival" autocomplete="off">
                 <div id="arrival-suggestions" class="suggestions"></div>
+
+                <h2>OR</h2>
+
+                <label for="flight-number">Search by Flight Number:</label>
+                <input type="text" placeholder="CX888" id="flight-number" autocomplete="off">
                 
                 <button type="submit">Search</button>
             </form>
         </div>
-
+    </div>
+    <div class="container options-page">
         <div id="flight-options" style="display: none; margin-top: 20px;">
             <h2>Flight Options</h2>
-            <div id="flight-list" class="scrollable-list">
+            <div id="flight-list" class="scrollable-list"></div>
+            <div class="button-div">
+                <button type="button" id="back-button">Back</button>
             </div>
-            <button type="button" id="back-button">Back</button>
         </div>
-
+    </div>
+    <div class="container details-page">
         <div id="flight-details" style="display: none;">
             <h2>FLIGHT DETAILS</h2>
             <p id="flight-info"></p>
@@ -45,17 +59,19 @@
                 <h3>Live location tracking</h3>
                 <div id="map"></div>
             </div>
-            <button type="button" id="back-details-button">Back</button>
-            <button type="button" id="refresh-button">Reload</button>
+            <div class="button-div">
+                <button type="button" id="back-details-button">Back</button>
+                <button type="button" id="refresh-button">Refresh</button>
+            </div>
         </div>
     </div>
-
     <script src="airports.js"></script> <!-- Airport data -->
     <script src="buttons.js"></script> <!-- Button event listeners -->
     <script src="details.js"></script> <!-- Flight details -->
     <script src="dummy.js"></script> <!-- Dummy data simulating API calls -->
     <script src="options.js"></script> <!-- Flight options display -->
     <script src="search.js"></script> <!-- Flight search functionality -->
+    <script src="secrets.js"></script> <!-- API keys -->
 
 </body>
 </html>
